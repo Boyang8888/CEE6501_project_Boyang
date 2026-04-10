@@ -1,1 +1,78 @@
+# ============================================================
+# Google Colab environment setup (pinned versions)
+# ============================================================
 
+import sys
+import os
+import subprocess
+
+if "google.colab" in sys.modules:
+    print("Running in Google Colab")
+    print("Python version:", sys.version.split()[0])
+
+    # ---- Required package versions --------------------------
+    requirements = {
+        "numpy": "2.4.0",
+        "scipy": "1.16.3",
+        "matplotlib": "3.10.8",
+        "pandas": "2.3.3",
+        "plotly": "6.5.2"
+    }
+
+    # ---- Check currently loaded versions --------------------
+    restart_needed = False
+
+    for pkg, required_version in requirements.items():
+        try:
+            module = __import__(pkg)
+            installed_version = module.__version__
+        except Exception:
+            installed_version = None
+
+        print(f"{pkg}: {installed_version} (required: {required_version})")
+
+        if installed_version != required_version:
+            restart_needed = True
+
+    # ---- Install if needed ----------------------------------
+    if restart_needed:
+        print("\nInstalling pinned package versions...")
+
+        pip_args = [
+            f"{pkg}=={ver}" for pkg, ver in requirements.items()
+        ]
+
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", "-q", *pip_args]
+        )
+
+        print("Installation complete.")
+        print("Restarting runtime to load correct packages...")
+
+        # This will appear as a "crash" in Colab — expected behavior
+        os.kill(os.getpid(), 9)
+
+    else:
+        print("\nAll required package versions already installed.")
+
+else:
+    print("Not running in Google Colab — setup skipped.")
+    print("Python version:", sys.version.split()[0])
+
+
+import numpy as np
+import scipy
+import matplotlib
+import pandas as pd
+import plotly
+
+print("numpy:", np.__version__)
+print("scipy:", scipy.__version__)
+print("matplotlib:", matplotlib.__version__)
+print("pandas:", pd.__version__)
+print("plotly:", plotly.__version__)
+
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+
+np.set_printoptions(precision=3, suppress=True)
