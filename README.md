@@ -248,8 +248,7 @@ outputs/
 ## 👤 Author
 
 **Boyang Chen**
-CEE 6501 Matrix Structural Analysis
-Georgia Institute of Technology
+
 
 ---
 
